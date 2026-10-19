@@ -1,0 +1,5 @@
+{
+    "terminal.integrated.defaultProfile.windows": "Windows PowerShell",
+    "terminal.integrated.enableImages": true,
+    "terminal.integrated.windowsUseConptyDll": true
+}
