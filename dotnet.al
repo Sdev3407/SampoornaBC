@@ -1,6 +1,7 @@
 dotnet
 {
 
+
     // assembly(SmsClient)
     // {
     //     Version = '1.0.0.0';
@@ -9,16 +10,16 @@ dotnet
     //     type("Microsoft.Dynamics.Nav.NavSMSHelper.SMSClient"; SmsClient)
     //     { }
     // }
-    // assembly("Microsoft.Dynamics.Nav.MX")
-    // {
-    //     Version = '23.0.0.0';
-    //     Culture = 'neutral';
-    //     PublicKeyToken = '31bf3856ad364e35';
+    assembly("Microsoft.Dynamics.Nav.MX")
+    {
+        Version = '23.0.0.0';
+        Culture = 'neutral';
+        PublicKeyToken = '31bf3856ad364e35';
 
-    //     type("Microsoft.Dynamics.Nav.MX.BarcodeProviders.QRCodeProvider"; "QRCodeProvider")
-    //     {
-    //     }
-    // }
+        type("Microsoft.Dynamics.Nav.MX.BarcodeProviders.QRCodeProvider"; "QRCodeProvider")
+        {
+        }
+    }
     // assembly(System)
     // {
     //     //  Version = '4.0.0.0';
