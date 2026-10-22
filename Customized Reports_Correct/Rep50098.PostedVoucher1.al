@@ -496,7 +496,7 @@ report 50098 "Posted Voucher1"
         UserRec: Record 2000000120;
 
 
-    procedure FindGLAccName("Source Type": Option " ",Customer,Vendor,"Bank Account","Fixed Asset"; "Entry No.": Integer; "Source No.": Code[20]; "G/L Account No.": Code[20]): Text[50]
+    procedure FindGLAccName("Source Type": Option " ",Customer,Vendor,"Bank Account","Fixed Asset"; "Entry No.": Integer; "Source No.": Code[20]; "G/L Account No.": Code[20]): Text[100]
     var
         AccName: Text[100];
         VendLedgerEntry: Record 25;
@@ -557,7 +557,7 @@ report 50098 "Posted Voucher1"
     end;
 
 
-    procedure FindGLAccNum("Source Type": Option " ",Customer,Vendor,"Bank Account","Fixed Asset"; "Entry No.": Integer; "Source No.": Code[20]; "G/L Account No.": Code[20]): Text[50]
+    procedure FindGLAccNum("Source Type": Option " ",Customer,Vendor,"Bank Account","Fixed Asset"; "Entry No.": Integer; "Source No.": Code[20]; "G/L Account No.": Code[20]): Text[100]
     var
         AccNum: Text[50];
         VendLedgerEntry: Record 25;
