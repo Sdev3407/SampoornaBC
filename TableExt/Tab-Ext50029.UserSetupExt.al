@@ -597,6 +597,30 @@ tableextension 50029 UserSetupExt extends "User Setup"
         {
             OptionMembers = "Head Office","Feed Plant","CBF";
         }
+        field(50095; "BOM Print"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50096; "Bank Payment"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50097; "Login By OTP"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50098; "Material issue"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50099; "User Status"; Option)
+        {
+            OptionCaption = 'Enabled,Disabled';
+            OptionMembers = Enabled,Disabled;
+            //DataClassification = ToBeClassified;
+            FieldClass = FlowField;
+            CalcFormula = lookup(User.State where("User Name" = field("User ID")));
+        }
     }
 
 

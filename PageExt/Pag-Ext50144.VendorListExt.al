@@ -193,46 +193,47 @@ pageextension 50144 VendorListExt extends "Vendor List"
         }
         addafter("Vendor - Detail Trial Balance")
         {
-            // action("Send Email(Vendor Statement)")
-            // {
-            //     Image = SendAsPDF;
-            //     Promoted = true;
-            //     PromotedCategory = Process;
-            //     PromotedIsBig = true;
-            //     ApplicationArea = all;
-            //     trigger OnAction()
-            //     begin
-            //         CLEAR(VLEAccountStatement);
-            //         VLEAccountStatement.SavePDF(TRUE);
-            //         VLEAccountStatement.RUN;
-            //     end;
-            // }
-            // action("Save PDF(Vendor Statement)")
-            // {
-            //     Image = PreviewChecks;
-            //     ApplicationArea = all;
-            //     trigger OnAction()
-            //     begin
-            //         CLEAR(VLEAccountStatement);
-            //         VLEAccountStatement.SetReportPreview(TRUE);
-            //         VLEAccountStatement.RUN;
-            //     end;
-            // }
-            // action("Vendor Statement New")
-            // {
-            //     Caption = 'Vendor Statement New';
-            //     Image = "Report";
-            //     ApplicationArea = all;
-            //     trigger OnAction()
-            //     var
-            //         VendorRec: Record 23;
-            //     begin
-            //         VendorRec.RESET;
-            //         VendorRec.SETRANGE("No.", Rec."No.");
-            //         IF VendorRec.FINDFIRST THEN
-            //             REPORT.RUNMODAL(50015, TRUE, TRUE, VendorRec);
-            //     end;
-            // }
+            action("Send Email(Vendor Statement)")
+            {
+                Image = SendAsPDF;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ApplicationArea = all;
+                trigger OnAction()
+                begin
+                    CLEAR(VLEAccountStatement);
+                    VLEAccountStatement.SavePDF(TRUE);
+                    VLEAccountStatement.RUN;
+                end;
+            }
+            action("Save PDF(Vendor Statement)")
+            {
+                Image = PreviewChecks;
+                ApplicationArea = all;
+                trigger OnAction()
+                begin
+                    CLEAR(VLEAccountStatement);
+                    VLEAccountStatement.SetReportPreview(TRUE);
+                    VLEAccountStatement.RUN;
+                end;
+            }
+            action("Vendor Statement New_SFPL")
+            {
+                ApplicationArea = All;
+                Caption = 'Vendor Statement New_SFPL';
+                Image = "Report";
+
+                trigger OnAction()
+                var
+                    VendorRec: Record 23;
+                begin
+                    VendorRec.RESET;
+                    VendorRec.SETRANGE("No.", Rec."No.");
+                    IF VendorRec.FINDFIRST THEN
+                        REPORT.RUNMODAL(50147, TRUE, TRUE, VendorRec);
+                end;
+            }
             action("Send Email(Balance Confirmation)")
             {
                 ApplicationArea = all;

@@ -94,6 +94,27 @@ pageextension 50105 ReleasedProductionOrdersExt extends "Released Production Ord
             }
 
         }
+        addafter("Change &Status")
+        {
+            action(UpdateAgeDetails)
+            {
+                ApplicationArea = All;
+
+                trigger OnAction()
+                var
+                    TestCu: Codeunit 50021;
+                    ProdOrder: Record "Production Order";
+                begin
+                    ProdOrder.Reset();
+                    CurrPage.SetSelectionFilter(ProdOrder);
+                    if ProdOrder.FindSet() then
+                        repeat
+                            clear(TestCu);
+                            TestCu.Code(ProdOrder."No.");
+                        until ProdOrder.Next() = 0;
+                end;
+            }
+        }
     }
 
     trigger OnOpenPage()

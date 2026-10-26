@@ -2,6 +2,13 @@ pageextension 50057 LocationCardExt extends "Location Card"
 {
     layout
     {
+        addafter(Code)
+        {
+            field("Send mail Report 50136"; "Send mail Report 50136")
+            {
+                ApplicationArea = all;
+            }
+        }
         modify(Bins)
         {
             Visible = VisibleStarFoods;
@@ -334,6 +341,80 @@ pageextension 50057 LocationCardExt extends "Location Card"
 
     actions
     {
+        addafter("Online Map")
+        {
+            action("Create Customer")
+            {
+                ApplicationArea = All;
+                Image = Vendor;
+                Promoted = true;
+                trigger OnAction()
+                var
+                    Customer: Record customer;
+                    NewCustomerNo: Code[20];
+                    NoSeriesMgt: Codeunit NoSeriesManagement;
+                    SalesSetup: Record "Sales & Receivables Setup";
+                    Location: Record Location;
+                    PostConfirmQst: Label 'Customer Already Created Against this Location Do you wants to check Customer List and create Again %1?';
+                    PostConfirmQst1: Label 'You have checked the customer list Still do you wants to Create Customer %1?';
+                    ConfirmManagement: Codeunit "Confirm Management";
+                begin
+                    SalesSetup.GET();
+                    //NewCustomerNo := NoSeriesMgt.GetNextNo(SalesSetup."Customer Nos.", Today, true);
+                    Location.Reset();
+                    Location.SetRange(Code, Rec.Code);
+                    if Location.FindFirst() then BEGIN
+                        Customer.Reset();
+                        Customer.SetRange(Customer."P.A.N. No.", Location."P.A.N");
+                        if Customer.FindFirst() then begin
+                            if not ConfirmManagement.GetResponseOrDefault(StrSubstNo(PostConfirmQst, Customer.Count), true) then
+                                exit
+                            else begin
+                                Clear(CustomerPage);
+                                CustomerPage.SetTableView(Customer);
+                                CustomerPage.Run();
+                                if not ConfirmManagement.GetResponseOrDefault(StrSubstNo(PostConfirmQst1, Customer.Count), true) then
+                                    exit
+                            end;
+                            Customer.Init();
+                            Customer.Validate("No.", NoSeriesMgt.GetNextNo(SalesSetup."Customer Nos.", Today, true));
+                            Customer.Validate(Name, Rec.Name);
+                            Customer.Validate(Address, REC.Address);
+                            Customer.Validate("Address 2", Rec."Address 2");
+                            Customer.Validate(City, rEC.City);
+                            Customer.Validate("Country/Region Code", Rec."Country/Region Code");
+                            Customer.Validate("Post Code", Rec."Post Code");
+                            Customer.Validate("Phone No.", Rec."Phone No.");
+                            Customer."P.A.N. No." := Rec."P.A.N";
+                            IF Rec."GST Registration No." <> '' THEN begin
+                                Customer."GST Customer Type" := Customer."GST Customer Type"::Registered;
+                                Customer."GST Registration No." := Rec."GST Registration No.";
+                                Customer."GST Registration Type" := Customer."GST Registration Type"::GSTIN;
+                            end;
+                            Customer.Insert();
+                            Message('%1,%2', 'Customer Created for This vendor New Customer No Is:', Customer."No.");
+                        end else begin
+                            Customer.Init();
+                            Customer.Validate("No.", NoSeriesMgt.GetNextNo(SalesSetup."Customer Nos.", Today, true));
+                            Customer.Validate(Name, Rec.Name);
+                            Customer.Validate(Address, REC.Address);
+                            Customer.Validate("Address 2", Rec."Address 2");
+                            Customer.Validate(City, rEC.City);
+                            Customer.Validate("Country/Region Code", Rec."Country/Region Code");
+                            Customer.Validate("Post Code", Rec."Post Code");
+                            Customer.Validate("Phone No.", Rec."Phone No.");
+                            Customer."P.A.N. No." := Rec."P.A.N";
+                            IF Rec."GST Registration No." <> '' THEN begin
+                                Customer."GST Customer Type" := Customer."GST Customer Type"::Registered;
+                                Customer."GST Registration No." := Rec."GST Registration No.";
+                                Customer."GST Registration Type" := Customer."GST Registration Type"::GSTIN;
+                            end;
+                            Customer.Insert();
+                        end;
+                    end
+                end;
+            }
+        }
 
         addafter("&Location")
         {
@@ -714,4 +795,5 @@ pageextension 50057 LocationCardExt extends "Location Card"
         OpenApprovalEntriesExistCurrUser: Boolean;
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
         CompanyInfo: Record "Company Information";
+        CustomerPage: Page "Customer List";
 }

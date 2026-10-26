@@ -2,6 +2,13 @@ pageextension 50101 PurchInvoiceSubformExt extends "Purch. Invoice Subform"
 {
     layout
     {
+        addafter(Quantity)
+        {
+            field("Flock No."; Rec."Flock No.")
+            {
+                ApplicationArea = all;
+            }
+        }
 
         modify("Gen. Prod. Posting Group")
         {

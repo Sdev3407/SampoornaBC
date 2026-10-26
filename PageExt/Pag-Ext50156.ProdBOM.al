@@ -25,6 +25,28 @@ pageextension 50156 ProdBOM extends "Production BOM List"
     }
     actions
     {
+        addafter("Quantity Explosion of BOM")
+        {
+            action("Print Production BOM")
+            {
+                ApplicationArea = All;
+                Image = ProductDesign;
+                Promoted = true;
+                PromotedCategory = Report;
+                trigger OnAction()
+                begin
+                    ProductionBomHeader.Reset();
+                    CurrPage.SetSelectionFilter(ProductionBomHeader);
+                    if ProductionBomHeader.FindSet() then
+                        repeat
+                            ProductionBomHeader1.Reset();
+                            ProductionBomHeader1.SetRange(ProductionBomHeader1."No.", ProductionBomHeader."No.");
+                            if ProductionBomHeader1.FindFirst() then
+                                Report.RunModal(50132, false, false, ProductionBomHeader1);
+                        until ProductionBomHeader.Next() = 0
+                end;
+            }
+        }
 
     }
     trigger OnAfterGetRecord()
@@ -33,10 +55,12 @@ pageextension 50156 ProdBOM extends "Production BOM List"
     end;
 
     Var
+        ProductionBomHeader1: Record "Production BOM Header";
         ProdBOMHeader: Record "Production BOM Header";
         ProductionBOMCopy: Codeunit "Production BOM-Copy";
         VersionMgt: Codeunit VersionManagement;
         ProdBOMWhereUsed: Page "Prod. BOM Where-Used";
         ActiveVersionCode: Code[20];
+        ProductionBomHeader: Record "Production BOM Header";
 
 }

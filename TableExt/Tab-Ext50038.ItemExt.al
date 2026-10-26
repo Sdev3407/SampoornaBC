@@ -130,6 +130,10 @@ tableextension 50038 ItemExt extends Item
             OptionCaption = ' ,LLP,Commercial Feed,CBF,CATTLE,SWINE';
             OptionMembers = " ",LLP,"Commercial Feed",CBF,CATTLE,SWINE;
         }
+        field(50026; "Mandatory Mandi Name(50137)"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
         field(60000; "Prod. Forecast Qty (Base) New"; Decimal)
         {
             CalcFormula = sum("Production Forecast Entry"."Forecast Quantity (Base)" where("Item No." = field("No."),

@@ -31,6 +31,21 @@ pageextension 50152 ProductionBomExt1 extends "Production BOM"
         }
         addafter("Copy &BOM")
         {
+            action("Print Production BOM")
+            {
+                ApplicationArea = All;
+                Image = ProductDesign;
+                Promoted = true;
+                PromotedCategory = Process;
+                trigger OnAction()
+                begin
+                    ProductionBomHeader.Reset();
+                    ProductionBomHeader.SetRange(ProductionBomHeader."No.", Rec."No.");
+                    if ProductionBomHeader.FindFirst() then begin
+                        Report.RunModal(50132, true, false, ProductionBomHeader);
+                    end;
+                end;
+            }
             action("Copy Prod BOM")
             {
                 ApplicationArea = Manufacturing;
@@ -67,6 +82,7 @@ pageextension 50152 ProductionBomExt1 extends "Production BOM"
         ProdBOMVersion: Record "Production BOM Version";
         ProductionBOMCopy: Codeunit "Production BOM-Copy";
         VersionMgt: Codeunit VersionManagement;
+        ProductionBomHeader: Record "Production BOM Header";
 
     trigger OnOpenPage()
     var

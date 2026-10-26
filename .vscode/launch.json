@@ -18,9 +18,9 @@
 
 
 
-        //"startupCompany": "Sampoorna Feeds Pvt. Ltd",
+        "startupCompany": "Sampoorna Feeds Pvt. Ltd",
         //"startupCompany": "Star Foods",
-        "startupCompany":"VETADD NUTRIENTS PRIVATE LIMIT",
+        //"startupCompany":"VETADD NUTRIENTS PRIVATE LIMIT",
            "authentication": "UserPassword",
            //"authentication":"Windows",
             "startupObjectId": 9006,

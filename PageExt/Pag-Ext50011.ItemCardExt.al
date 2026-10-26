@@ -2,6 +2,14 @@ pageextension 50011 ItemCardExt extends "Item Card"
 {
     layout
     {
+        addafter(Description)
+        {
+            field("Mandatory Mandi Name"; "Mandatory Mandi Name(50137)")
+            {
+                ApplicationArea = all;
+                Caption = 'Mandatory Mandi Name';
+            }
+        }
 
         modify(Item)
         {
@@ -120,7 +128,7 @@ pageextension 50011 ItemCardExt extends "Item Card"
                 ApplicationArea = All;
 
             }
-            field("ALEX Item Code";Rec."ALEX Item Code")
+            field("ALEX Item Code"; Rec."ALEX Item Code")
             {
                 ApplicationArea = All;
 
@@ -197,7 +205,7 @@ pageextension 50011 ItemCardExt extends "Item Card"
                 end;
             }
         }
-    
+
 
         addafter(Identifiers)
         {
@@ -276,7 +284,7 @@ pageextension 50011 ItemCardExt extends "Item Card"
                     //PRU_NEELESH
                 end;
             }
-            
+
         }
         modify(SendApprovalRequest)
         {

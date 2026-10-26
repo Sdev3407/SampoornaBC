@@ -87,21 +87,7 @@ tableextension 50032 CustomerExt1 extends Customer
             END;
 
         }
-        // modify("Credit Limit (LCY)")
-        // {
-        //     // trigger OnAfterValidate()
-        //     // begin
-        //     //     "Remaining Credit Limit" := 0;
-        //     //     CALCFIELDS("Balance (LCY)", "Shipped Not Invoiced (LCY)");
-        //     //     IF "Credit Limit (LCY)" <> 0 THEN BEGIN
-        //     //         IF ("Credit Limit (LCY)" - ("Balance (LCY)" + "Shipped Not Invoiced (LCY)")) < 0 THEN
-        //     //             ERROR('Remaining Credit Limit cannot be less than 0')
-        //     //         ELSE
-        //     //             "Remaining Credit Limit" := "Credit Limit (LCY)" - ("Balance (LCY)" + "Shipped Not Invoiced (LCY)");
-        //     //     END ELSE
-        //     //         "Remaining Credit Limit" := 0;
-        //     // end;
-        // }
+
         modify("Salesperson Code")
         {
             trigger OnAfterValidate()
@@ -445,6 +431,11 @@ tableextension 50032 CustomerExt1 extends Customer
         {
             DataClassification = ToBeClassified;
             Description = 'This is for Star foods';
+        }
+
+        field(50066; "Created From Vendor No."; CODE[20])
+        {
+            DataClassification = ToBeClassified;
         }
     }
     var

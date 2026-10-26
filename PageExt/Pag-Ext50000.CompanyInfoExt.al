@@ -55,11 +55,24 @@ pageextension 50000 CompanyInfoExt extends "Company Information"
     {
         addafter(Currencies)
         {
+            action(testSMS)
+            {
+                ApplicationArea = All;
+                //Caption = 'Generate API Key';
+
+                trigger OnAction()
+                var
+                    SMSdetails: Codeunit 50007;
+                begin
+                    smsdetails.APISMSSingalNo('9759785217', '482913 is your Mcava Meats login code. It is valid for 5 minutes. Do not share it with anyone. Avl02uMTIQl',
+                    '', '', '1777179281549475666')
+                end;
+            }
+
+
+
+
         }
-
-
-
-
     }
     trigger OnOpenPage()
     var

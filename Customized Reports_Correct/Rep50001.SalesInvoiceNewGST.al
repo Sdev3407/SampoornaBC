@@ -99,6 +99,9 @@ report 50001 "Sales Invoice New-GST"
                     column(OutputNo; OutputNo)
                     {
                     }
+                    Column(companyCode; CompanyInfo.SFPLCompany)
+                    {
+                    }
                     column(CopyText; CopyText)
                     {
                     }
@@ -667,12 +670,24 @@ report 50001 "Sales Invoice New-GST"
                         column(igst; igst)
                         {
                         }
+                        Column(ABC; ABC)
+                        {
+                        }
 
                         trigger OnAfterGetRecord()
                         var
                             TCSENtry: Record "TCS Entry";
 
                         begin
+
+                            ABC := TRUE;
+                            if ((CompanyInfo."SFPLCompany" <> CompanyInfo."SFPLCompany"::Sampoorna) and (CompanyInfo."SFPLCompany" <> CompanyInfo."SFPLCompany"::"Star Foods")) then begin
+                                IF (("Sales Invoice Line"."HSN/SAC Code" <> '23099010') AND ("Sales Invoice Line"."HSN/SAC Code" <> '23099090')) THEN
+                                    ABC := FALSE;
+                            END ELSE
+                                ABC := FALSE;
+
+
                             IF COPYSTR("Sales Invoice Line".Description, 1, 11) = 'Shipment No' THEN BEGIN
                                 CurrReport.SKIP;
                             END;
@@ -710,7 +725,7 @@ report 50001 "Sales Invoice New-GST"
                                 IGSTText := STRSUBSTNO('IGST %1 %',ROUND("Sales Invoice Line"."GST %",0.01,'='))
                               ELSE
                                 IGSTText := 'IGST %';
-                            
+
                             IF "Sales Invoice Line"."GST Jurisdiction Type"="Sales Invoice Line"."GST Jurisdiction Type"::Intrastate THEN BEGIN
                              //PRU_RPG cgst:=ROUND(GSTAmt/2,1,'=');
                              //PRU_RPG sgst:=ROUND(GSTAmt/2,1,'=');
@@ -723,7 +738,7 @@ report 50001 "Sales Invoice New-GST"
                                 CGSTText := STRSUBSTNO('CGST %1 %',ROUND("Sales Invoice Line"."GST %"/2,0.01,'='))
                             ELSE
                               CGSTText := 'CGST %';
-                            
+
                             IF (sgst <> 0) THEN
                                 SGSTText := STRSUBSTNO('SGST %1 %',ROUND("Sales Invoice Line"."GST %"/2,0.01,'='))
                             ELSE
@@ -1459,6 +1474,7 @@ report 50001 "Sales Invoice New-GST"
         Exemp: Boolean;
         VUserID: Text;
         VPrintdateTime: DateTime;
+        ABC: Boolean;
 
     procedure SetPrintIDandPrintTime(UserID: Text; PrintDateTime: DateTime)
     begin

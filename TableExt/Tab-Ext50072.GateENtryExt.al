@@ -57,14 +57,12 @@ tableextension 50072 GateENtryExt extends "Gate Entry Header"
         UserSetup.SETFILTER(UserSetup."Access Gate In & Gate Out", '%1', UserSetup."Access Gate In & Gate Out"::View);
         IF UserSetup.FINDFIRST THEN
             ERROR('You do not have permission to enter Gate Entry Details');
-        //PRU_DD 1.10
 
     end;
 
     trigger OnAfterInsert()
     var
         UserSetup: Record "User Setup";
-        //     InventSetup: Record "Inventory Setup";
         InventSetup1: Record "Responsibility Center";
         NoSeriesManagement: Codeunit 396;
     begin
@@ -73,29 +71,6 @@ tableextension 50072 GateENtryExt extends "Gate Entry Header"
         UserSetup.SETRANGE("HO Users", FALSE);
         IF UserSetup.FINDFIRST THEN
             "Location Code" := UserSetup."Shortcut Dimension 3 Code";
-
-        //   Message('%1', "No.");
-        //InventSetup.GET;
-        /*
-        UserSetup.GET(USERID);
-        UserSetup.TESTFIELD("Responsibility Center");
-        InventSetup1.GET(UserSetup."Responsibility Center");
-
-        case "Entry Type" of
-            "Entry Type"::Inward:
-                // if "No." = '' then
-                begin
-                    InventSetup1.TestField("Inward Gate Entry Nos.");
-                    "No." := NoSeriesManagement.GetNextNo(InventSetup1."Inward Gate Entry Nos.", "Posting Date", true);
-                end;
-            "Entry Type"::Outward:
-                //if "No." = '' then 
-                begin
-                    InventSetup1.TestField("Outward Gate Entry Nos.");
-                    "No." := NoSeriesManagement.GetNextNo(InventSetup1."Outward Gate Entry Nos.", "Posting Date", true);
-                end;
-        end;
-        */
     end;
 
     trigger OnAfterRename()
@@ -107,7 +82,7 @@ tableextension 50072 GateENtryExt extends "Gate Entry Header"
         UserSetup.SETFILTER(UserSetup."Access Gate In & Gate Out", '%1', UserSetup."Access Gate In & Gate Out"::View);
         IF UserSetup.FINDFIRST THEN
             ERROR('You do not have Permission to enter Gate Entry Details');
-        //PRU_DD 1.10
+
 
     end;
 }

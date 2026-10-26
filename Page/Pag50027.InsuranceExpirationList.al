@@ -126,6 +126,13 @@ page 50027 "Insurance Expiration List"
             {
                 ApplicationArea = All;
             }
+            part("Attached Documents"; "Insurance Document Attached")
+            {
+                ApplicationArea = All;
+                Caption = 'Attachments';
+                SubPageLink = "Table ID" = CONST(50016),
+                              "No." = FIELD("Insurance No."), "Document Type" = filter(Order);
+            }
         }
     }
 
@@ -133,8 +140,21 @@ page 50027 "Insurance Expiration List"
     {
         area(Processing)
         {
-            
+            action(ActionName)
+            {
+                ApplicationArea = Basic, Suite;
+                Caption = 'Attachements';
+                Image = Attachments;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+                RunObject = page "Insurance Document Attached";
+                RunPageLink = "Table ID" = filter(50016), "No." = field("Insurance No."), "Document Type" = const(Order);
+            }
         }
+
     }
 }
+
 

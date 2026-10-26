@@ -468,6 +468,25 @@ pageextension 50140 UserSetupExt extends "User Setup"
                 //Visible = flag;
             }
         }
+        addafter(PhoneNo)
+        {
+            field("BOM Print"; Rec."BOM Print")
+            {
+                ApplicationArea = all;
+            }
+            field("Bank Payment"; Rec."Bank Payment")
+            {
+                ApplicationArea = all;
+            }
+            field("Login By OTP"; Rec."Login By OTP")
+            {
+                ApplicationArea = all;
+            }
+            field("User Status"; Rec."User Status")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
     actions
     {

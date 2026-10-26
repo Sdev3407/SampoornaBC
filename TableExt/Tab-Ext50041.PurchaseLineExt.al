@@ -2,21 +2,7 @@ tableextension 50041 PurchaseLineExt extends "Purchase Line"
 {
     fields
     {
-        // modify("GST Reverse Charge")
-        // {
-        //     trigger OnAfterValidate()
-        //     var
-        //         PurH: Record "Purchase Header";
-        //     begin
-        //         PurH.Get(Rec."Document Type", Rec."Document No.");
-        //         if PurH."GST Vendor Type" in [PurH."GST Vendor Type"::Unregistered] then begin
-        //             PurH.Validate("RCM Doc", Rec."GST Reverse Charge");
-        //             //PurH.Modify();
-        //         end
 
-
-        //     end;
-        // }
 
         modify("TDS Section Code")
         {
@@ -65,16 +51,14 @@ tableextension 50041 PurchaseLineExt extends "Purchase Line"
                 ItemRec: Record Item;
                 PurchaseHeaderRec: Record "Purchase Header";
             begin
-                // if ItemRec.Get("No.") then
-                //     "GST Exempt" := ItemRec."GST Exempt";
-                // if Vendor.Get("Buy-from Vendor No.") then begin
-                //     if (Vendor."GST Vendor Type" = Vendor."GST Vendor Type"::Unregistered) and (Rec."GST Group Type" = Rec."GST Group Type"::Goods) then
-                //         "GST Reverse Charge" := False;
-                // end;
-                // Exempted := false;
+
                 if PurchaseHeaderRec.get("Document Type", "Document No.") then begin
                     "Vendor State Code" := PurchaseHeaderRec.State;
                     "Location State Code" := PurchaseHeaderRec."Location State Code";
+                end;
+                IF Rec."Document Type" = Rec."Document Type"::Order then begin
+                    IF ItemRec.GET(Rec."No.") then
+                        Rec."Item Type" := ItemRec."Item Type";
                 end;
             end;
         }

@@ -2,6 +2,14 @@ pageextension 50009 CustomerListsExt extends "Customer List"
 {
     layout
     {
+        addafter("No.")
+        {
+            field("Created From Vendor No."; Rec."Created From Vendor No.")
+            {
+                ApplicationArea = all;
+                Editable = false;
+            }
+        }
         modify("No.")
         {
             Style = Unfavorable;

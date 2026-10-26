@@ -18,6 +18,7 @@ report 50009 "Debit Note"
             column(EInvoiceNo; "Purch. Cr. Memo Hdr."."E-Invoice No.")
             {
             }
+
             column(AuthoSig; AuthoSig)
             { }
             column(TermCondition; TermCondition)
@@ -71,6 +72,7 @@ report 50009 "Debit Note"
                     column(CopyText; CopyText)
                     {
                     }
+
                     column(Company_Name; CompanyInfo."Name")
                     {
                     }
@@ -544,6 +546,7 @@ report 50009 "Debit Note"
                         OutputNo += 1;
                     END;
 
+
                     VenRec.RESET;
                     VenRec.SETRANGE("No.", "Purch. Cr. Memo Hdr."."Buy-from Vendor No.");
                     IF VenRec.FINDFIRST THEN BEGIN
@@ -910,6 +913,7 @@ report 50009 "Debit Note"
         TCSENtry: Record "TDS Entry";
         AuthoSig: Text;
         TermCondition: Text;
+        VetaddCompany: text;
 
 
 }

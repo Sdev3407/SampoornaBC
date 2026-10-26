@@ -2,6 +2,15 @@ pageextension 50008 CustomerCardExt1 extends "Customer Card"
 {
     layout
     {
+        addafter("No.")
+        {
+            field("Created From Vendor No."; Rec."Created From Vendor No.")
+            {
+                ApplicationArea = all;
+                Editable = false;
+            }
+
+        }
         modify("Balance (LCY)")
         {
             Visible = DisableOnFeedPlant;
@@ -53,6 +62,66 @@ pageextension 50008 CustomerCardExt1 extends "Customer Card"
         modify("Customer Price Group")
         {
             Visible = true;
+
+            trigger OnAfterValidate()
+            var
+                Cust: Record Customer;
+                TempEmailItem: Record "Email Item" temporary;
+                EmailScenario: Enum "Email Scenario";
+                EmailCu: Codeunit Email;
+                EmailMsg: Codeunit "Email Message";
+                TeamSalesperson: Record "Team Salesperson";
+                Team: Record Team;
+                EmailRecpt: Text;
+                RecRef: RecordRef;
+                SalesPrice: Record "Sales Price";
+                Outstr: OutStream;
+                Instr: InStream;
+                TempBlob: Codeunit "Temp Blob";
+                SubJextText: Text;
+            begin
+                Clear(EmailCu);
+                Clear(EmailMsg);
+                if Rec."Salesperson Code" <> '' then begin
+                    TeamSalesperson.Reset();
+                    TeamSalesperson.SetRange(TeamSalesperson."Salesperson Code", Rec."Salesperson Code");
+                    if TeamSalesperson.FindFirst() then begin
+                        Team.Reset();
+                        Team.SetRange(Code, TeamSalesperson."Team Code");
+                        Team.SetFilter(Team."E-Mail", '<>%1', '');
+                        if Team.FindFirst() then
+                            EmailRecpt := Team."E-Mail";
+                    end;
+                end;
+                EmailRecpt := EmailRecpt + ';' + 'sale.coordinator1@sampoornafeeds.in;sale@sampoornafeeds.com;karanveer.singh@sampoornafeeds.in;pankaj.bhangalia@sampoornafeeds.in;shilpa.bhatia@sampoornafeeds.in';
+                EmailMsg.Create(EmailRecpt, Rec."No." + ' Changes in Customer Price Group', '');
+                SalesPrice.Reset();
+                SalesPrice.SetRange(SalesPrice."Sales Code", Rec."Customer Price Group");
+                if SalesPrice.FindFirst() then begin
+                    RecRef.GetTable(SalesPrice);
+                    TempBlob.CreateOutStream(Outstr);
+                    Report.SaveAs(50148, '', ReportFormat::Pdf, Outstr, RecRef);
+                    TempBlob.CreateInStream(Instr);
+                    EmailMsg.AddAttachment('New ' + Rec."No." + ' ' + Rec."Customer Price Group" + '.pdf', 'PDF', Instr);
+                end;
+                SalesPrice.Reset();
+                SalesPrice.SetRange(SalesPrice."Sales Code", XRec."Customer Price Group");
+                if SalesPrice.FindFirst() then begin
+                    RecRef.GetTable(SalesPrice);
+                    TempBlob.CreateOutStream(Outstr);
+                    Report.SaveAs(50148, '', ReportFormat::Pdf, Outstr, RecRef);
+                    TempBlob.CreateInStream(Instr);
+                    EmailMsg.AddAttachment('Old ' + Rec."No." + ' ' + XRec."Customer Price Group" + '.pdf', 'PDF', Instr);
+                end;
+                EmailMsg.AppendToBody('Dear All' + ',' + '<BR><BR>');
+                EmailMsg.AppendToBody('Customer Price group has been changed from ' + xRec."Customer Price Group" + ' To ' + Rec."Customer Price Group" + ' For Customer Code : ' + Rec."No." + '.<BR><BR>');
+                EmailMsg.AppendToBody('This modification performed by USER and Date  :' + UserId + ' ' + Format(Today) + '<BR><BR>');
+                EmailMsg.AppendToBody('Regards' + ',' + '<BR>' + 'Sampoorna Feeds Pvt. Ltd.' + '<BR><BR>');
+                EmailMsg.AppendToBody('This is system generated mail. Please do not reply.<BR><BR>');
+                EmailMsg.SetBodyHTMLFormatted(true);
+                EmailCu.OpenInEditor(EmailMsg, EmailScenario::Default);
+            end;
+
         }
         modify("Currency Code")
         {
@@ -460,8 +529,72 @@ pageextension 50008 CustomerCardExt1 extends "Customer Card"
     }
     actions
     {
+        addafter(Contact)
+        {
 
+            action("Create Vendor")
+            {
+                ApplicationArea = All;
+                Image = Customer;
+                Promoted = true;
+                trigger OnAction()
+                var
+                    Vendor: Record Vendor;
+                    NewCustomerNo: Code[20];
+                    NoSeriesMgt: Codeunit NoSeriesManagement;
+                    PurchuerSetup: Record "Purchases & Payables Setup";
+                begin
+                    PurchuerSetup.GET();
+                    Vendor.Reset();
+                    Vendor.SetRange("Created From Customer No.", Rec."No.");
+                    if NOT Vendor.FindFirst() then BEGIN
+                        Vendor.Init();
+                        Vendor.Validate("No.", NoSeriesMgt.GetNextNo(PurchuerSetup."Vendor Nos.", Today, true));
+                        Vendor.Validate(Name, Rec.Name);
+                        Vendor.Validate(Address, REC.Address);
+                        Vendor.Validate("Address 2", Rec."Address 2");
+                        Vendor.Validate(City, rEC.City);
+                        Vendor.Validate("Country/Region Code", Rec."Country/Region Code");
+                        Vendor.Validate("Post Code", Rec."Post Code");
+                        Vendor.Validate("Phone No.", Rec."Phone No.");
+                        Vendor.Validate("E-Mail", Rec."E-Mail");
+                        Vendor.Validate("Payment Terms Code", Rec."Payment Terms Code");
+                        Vendor.Validate("P.A.N. Status", Rec."P.A.N. Status");
+                        Vendor.Validate("P.A.N. No.", Rec."P.A.N. No.");
+                        Vendor.Validate("P.A.N. Reference No.", Rec."P.A.N. Reference No.");
+                        Vendor.Validate("Aadhar No.", Rec."Aadhar No.");
+                        Vendor.Validate("TAN No.", Rec."TAN No.");
+                        Vendor.Validate("State Code", Rec."State Code");
+                        Vendor."GST Name" := Rec."GST Name";
+                        Vendor."Created From Customer No." := Rec."No.";
+                        Vendor."GST Address" := Vendor."GST Address";
+                        Vendor."GST Address 2" := Vendor."GST Address 2";
+                        Vendor."GST Post Code" := Vendor."GST Post Code";
+                        Vendor."GST State Code" := Vendor."GST State Code";
+                        Vendor."GST Status" := Vendor."GST Status";
+                        Vendor."Last Updated Date" := Rec."Last Updated Date";
+                        Vendor."Gen. Bus. Posting Group" := Rec."Gen. Bus. Posting Group";
+                        Vendor."Vendor Posting Group" := Rec."Customer Posting Group";
+                        //Vendor."Aggregate Turnover" := Rec."Aggregate Turnover";
+                        IF Rec."GST Registration No." <> '' THEN begin
+                            Vendor."GST Vendor Type" := Vendor."GST Vendor Type"::Registered;
+                            Vendor."GST Registration No." := Rec."GST Registration No.";
+                            //Vendor.gst re := Vendor."GST Registration Type"::GSTIN;
+                        end;
+                        Vendor."Global Dimension 1 Code" := Rec."Global Dimension 1 Code";
+                        Vendor."Global Dimension 2 Code" := rEC."Global Dimension 2 Code";
+                        Vendor."Responsibility Center" := Rec."Responsibility Center";
+                        Vendor."Location Code" := Rec."Location Code";
+                        //Vendor.Validate("GST Customer Type",Rec."GST Vendor Type");
+                        Vendor.Insert();
+                        Message('%1,%2', 'Vendor Created for This Customer New Vendor No Is:', Vendor."No.");
+                    end
+                    ELSE
+                        Message('Vendor already Created For this Customer');
+                end;
+            }
 
+        }
         addafter("&Customer")
         {
             action(Reopen)

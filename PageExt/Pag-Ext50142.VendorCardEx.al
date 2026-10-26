@@ -411,10 +411,10 @@ pageextension 50142 VendorCardEx extends "Vendor Card"
         addafter("Vendor - Balance to Date")
         {
 
-            action("Vendor Statement New")
+            action("Vendor Statement New_SFPL")
             {
                 ApplicationArea = All;
-                Caption = 'Vendor Statement New';
+                Caption = 'Vendor Statement New_SFPL';
                 Image = "Report";
 
                 trigger OnAction()
@@ -424,7 +424,7 @@ pageextension 50142 VendorCardEx extends "Vendor Card"
                     VendorRec.RESET;
                     VendorRec.SETRANGE("No.", Rec."No.");
                     IF VendorRec.FINDFIRST THEN
-                        REPORT.RUNMODAL(50015, TRUE, TRUE, VendorRec);
+                        REPORT.RUNMODAL(50147, TRUE, TRUE, VendorRec);
                 end;
             }
 
@@ -472,7 +472,70 @@ pageextension 50142 VendorCardEx extends "Vendor Card"
                 end;
             }
         }
-
+        addafter("TDS Concessional Codes")
+        {
+            action("Create Customer")
+            {
+                ApplicationArea = All;
+                Image = Vendor;
+                Promoted = true;
+                trigger OnAction()
+                var
+                    Customer: Record customer;
+                    NewCustomerNo: Code[20];
+                    NoSeriesMgt: Codeunit NoSeriesManagement;
+                    SalesSetup: Record "Sales & Receivables Setup";
+                begin
+                    SalesSetup.GET();
+                    //NewCustomerNo := NoSeriesMgt.GetNextNo(SalesSetup."Customer Nos.", Today, true);
+                    Customer.Reset();
+                    Customer.SetRange("Created From Vendor No.", Rec."No.");
+                    if NOT Customer.FindFirst() then BEGIN
+                        Customer.Init();
+                        Customer.Validate("No.", NoSeriesMgt.GetNextNo(SalesSetup."Customer Nos.", Today, true));
+                        Customer.Validate(Name, Rec.Name);
+                        Customer.Validate(Address, REC.Address);
+                        Customer.Validate("Address 2", Rec."Address 2");
+                        Customer.Validate(City, rEC.City);
+                        Customer.Validate("Country/Region Code", Rec."Country/Region Code");
+                        Customer.Validate("Post Code", Rec."Post Code");
+                        Customer.Validate("Phone No.", Rec."Phone No.");
+                        Customer.Validate("E-Mail", Rec."E-Mail");
+                        Customer.Validate("Payment Terms Code", Rec."Payment Terms Code");
+                        Customer.Validate("P.A.N. Status", Rec."P.A.N. Status");
+                        Customer.Validate("P.A.N. No.", Rec."P.A.N. No.");
+                        Customer.Validate("P.A.N. Reference No.", Rec."P.A.N. Reference No.");
+                        Customer.Validate("Aadhar No.", Rec."Aadhar No.");
+                        Customer.Validate("TAN No.", Rec."TAN No.");
+                        Customer."GST Name" := Rec."GST Name";
+                        Customer."Created From Vendor No." := Rec."No.";
+                        Customer."GST Address" := Customer."GST Address";
+                        Customer."GST Address 2" := Customer."GST Address 2";
+                        Customer."GST Post Code" := Customer."GST Post Code";
+                        Customer."GST State Code" := Customer."GST State Code";
+                        Customer."GST Status" := Customer."GST Status";
+                        Customer."Last Updated Date" := Rec."Last Updated Date";
+                        Customer."Gen. Bus. Posting Group" := Rec."Gen. Bus. Posting Group";
+                        Customer."Customer Posting Group" := Rec."Vendor Posting Group";
+                        //Customer."Aggregate Turnover" := Rec."Aggregate Turnover";
+                        IF Rec."GST Registration No." <> '' THEN begin
+                            Customer."GST Customer Type" := Customer."GST Customer Type"::Registered;
+                            Customer."GST Registration No." := Rec."GST Registration No.";
+                            Customer."GST Registration Type" := Customer."GST Registration Type"::GSTIN;
+                        end;
+                        Customer."Global Dimension 1 Code" := Rec."Global Dimension 1 Code";
+                        Customer."Global Dimension 2 Code" := rEC."Global Dimension 2 Code";
+                        Customer."Responsibility Center" := Rec."Responsibility Center";
+                        Customer."Location Code" := Rec."Location Code";
+                        //Customer.Validate("GST Customer Type",Rec."GST Vendor Type");
+                        Customer.Insert();
+                        Message('%1,%2', 'Customer Created for This vendor New Customer No Is:', Customer."No.");
+                    end
+                    ELSE
+                        Message('Customer already Created For this Vendor');
+                end;
+            }
+        }
     }
     trigger OnAfterGetCurrRecord()
     begin

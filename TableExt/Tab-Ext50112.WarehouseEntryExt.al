@@ -8,6 +8,6 @@ tableextension 50112 "Warehouse Entry Ext" extends "Warehouse Entry"
             DataClassification = CustomerContent;
         }
 
-        //iWMS--
+
     }
 }

@@ -78,12 +78,6 @@ tableextension 50062 VendorExt1 extends Vendor
                         ERROR('last charecter need to be Alphabet');
                     //
                 END;
-                // if CopyStr(Rec."P.A.N. No.", 4, 1) = 'P' Then begin
-                //     if (Rec."P.A.N. No." <> 'PANAPPLIED') and (Rec."P.A.N. No." <> '') and (Rec."P.A.N. No." <> 'PANNOTAVBL') and (Rec."P.A.N. No." <> 'PANNOTAVBL') then
-                //         UpdateVendor(Rec."No.", Rec."P.A.N. No.");
-                // end else
-                //     Rec.Validate("PAN Link Status", "PAN Link Status"::Operative);
-
 
             END;
 
@@ -245,6 +239,10 @@ tableextension 50062 VendorExt1 extends Vendor
         }
 
         field(50033; "API aadhaar Seeding Status"; Text[10])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50034; "Created From Customer No."; CODE[20])
         {
             DataClassification = ToBeClassified;
         }

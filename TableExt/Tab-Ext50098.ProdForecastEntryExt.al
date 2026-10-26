@@ -13,19 +13,7 @@ tableextension 50098 ProdForecastEntryExt extends "Production Forecast Entry"
             DataClassification = ToBeClassified;
             TableRelation = "Salesperson/Purchaser".Code;
         }
-        modify("Forecast Quantity (Base)")
-        {
-            trigger OnAfterValidate()
-            var
-                ProdForecast: Record "Production Forecast Name";
-            begin
-                // if Rec."Production Forecast Name" <> '' then begin
-                //     ProdForecast.Get(Rec."Production Forecast Name");
-                //     if ProdForecast."SalesPerson Filter" <> '' then
-                //         Rec."SalesPerson Code" := ProdForecast."SalesPerson Filter";
-                // end;
-            end;
-        }
+        
     }
 
 }

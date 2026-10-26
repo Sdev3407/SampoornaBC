@@ -1,6 +1,6 @@
 tableextension 50113 "WarehouseJournalLineExt" extends "Warehouse Journal Line"
 {
-    // version Wisnpire
+
 
     fields
     {

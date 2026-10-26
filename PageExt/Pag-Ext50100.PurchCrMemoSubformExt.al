@@ -2,7 +2,13 @@ pageextension 50100 PurchCrMemoSubformExt extends "Purch. Cr. Memo Subform"
 {
     layout
     {
-
+        addafter(Quantity)
+        {
+            field("Flock No."; Rec."Flock No.")
+            {
+                ApplicationArea = all;
+            }
+        }
 
         modify(Exempted)
         {

@@ -44,10 +44,8 @@ tableextension 50092 PriceListLines extends "Price List Line"
                 apppc: Page 233;
             begin
                 IF "Variant Code" <> '' THEN BEGIN
-                    //PRU-VG
                     T7002.RESET;
-                    //  T7002.SETRANGE("Sales Type", Rec."Sales Type");
-                    // T7002.SETRANGE("Sales Code", "Sales Code");
+                    
                     T7002.SETRANGE(T7002."Product No.", rec."Product No.");
                     T7002.SETRANGE("Unit of Measure Code", "Unit of Measure Code");
                     T7002.SETFILTER("Variant Code", '%1', "Variant Code");
@@ -59,7 +57,6 @@ tableextension 50092 PriceListLines extends "Price List Line"
                         END;
                     END;
                 END ELSE BEGIN
-                    //PRU-VG
                     T7002.RESET;
                     T7002.SETRANGE(T7002."Product No.", rec."Product No.");
                     T7002.SETRANGE("Unit of Measure Code", "Unit of Measure Code");
@@ -73,7 +70,7 @@ tableextension 50092 PriceListLines extends "Price List Line"
                             END;
                         UNTIL T7002.NEXT = 0;
                     END;
-                    //PRU-VG
+
                 END;
 
             end;
@@ -109,7 +106,7 @@ tableextension 50092 PriceListLines extends "Price List Line"
                         IF "Discount Type" = "Discount Type"::Value THEN
                             "Unit Price" := "MRP Price" - "Discount Perc/Amount";
                 END;
-                //S.M
+                
 
             end;
         }
@@ -218,10 +215,7 @@ tableextension 50092 PriceListLines extends "Price List Line"
             begin
                 "Starting Date" := "Staring Data";
                 IF "Variant Code" <> '' THEN BEGIN
-                    //PRU-VG
                     T7002.RESET;
-                    //  T7002.SETRANGE("Sales Type", Rec."Sales Type");
-                    // T7002.SETRANGE("Sales Code", "Sales Code");
                     T7002.SETRANGE(T7002."Product No.", rec."Product No.");
                     T7002.SETRANGE("Unit of Measure Code", "Unit of Measure Code");
                     T7002.SETFILTER("Variant Code", '%1', "Variant Code");

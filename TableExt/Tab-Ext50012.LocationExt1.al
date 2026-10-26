@@ -749,6 +749,10 @@ tableextension 50012 LocationExt1 extends Location
         {
             DataClassification = ToBeClassified;
         }
+        field(50107; "Send mail Report 50136"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
     trigger OnInsert()
     begin

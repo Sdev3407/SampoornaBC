@@ -4,7 +4,7 @@ tableextension 50105 ProdOrderComponent extends "Prod. Order Component"
     {
         field(50000; "Item Catagory Code"; Code[20])
         {
-            //DataClassification = ToBeClassified;
+
             FieldClass = Normal;
             TableRelation = "Item Category";
         }

@@ -10,13 +10,11 @@ report 50065 "Delete Sales Order"
     {
         dataitem("Sales Header"; "Sales Header")
         {
-            DataItemTableView = WHERE(Status = CONST(Open),
-            "Shortcut Dimension 1 Code" = FILTER('<>CATTLE'));
+            DataItemTableView = WHERE(Status = CONST(Open));
+            //"Shortcut Dimension 1 Code" = FILTER('<>CATTLE'));
 
             trigger OnAfterGetRecord()
             begin
-
-
                 Firstdate := CalcDate('-CM', WorkDate());
                 if WorkDate() = CalcDate('-CM', WorkDate()) then begin
                     DeleteSH.RESET;
