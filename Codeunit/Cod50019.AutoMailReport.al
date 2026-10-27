@@ -320,11 +320,11 @@ codeunit 50019 "Auto Mail Report"
             Report.SaveAs(Report::"Balance Confirmation_Vendor", '', ReportFormat::Pdf, Outstr, RecRef);
             TempBlob.CreateInStream(Instr);
             SMTPMailSetup.AddAttachment(FORMAT(PDFVendor.Name) + '.Pdf', 'Pdf', Instr);
-            SMTPMailSetup.AppendToBody('With Best Regards' + ',' + '<BR>' + 'Sampoorna Team' + '<BR><BR>');
+            //SMTPMailSetup.AppendToBody('With Best Regards' + ',' + '<BR>' + 'Sampoorna Team' + '<BR><BR>');
             //SMTPMail.AppendBody('This is system generated mail. Please do not reply.<BR><BR>');
         end;
         SMTPMailSetup.AppendToBody('With Best Regards' + ',' + '<BR>' + 'Sampoorna Team' + '<BR><BR>');
-        SMTPMailSetup.AppendToBody('This is system generated mail. Please do not reply.<BR><BR>');
+        //SMTPMailSetup.AppendToBody('This is system generated mail. Please do not reply.<BR><BR>');
         SMTPMail.Send(SMTPMailSetup, Enum::"Email Scenario"::Default);
     end;
 
