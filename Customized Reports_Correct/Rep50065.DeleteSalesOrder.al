@@ -15,25 +15,25 @@ report 50065 "Delete Sales Order"
 
             trigger OnAfterGetRecord()
             begin
-                Firstdate := CalcDate('-CM', WorkDate());
-                if WorkDate() = CalcDate('-CM', WorkDate()) then begin
-                    DeleteSH.RESET;
-                    DeleteSH.SETRANGE("Document Type", DeleteSH."Document Type"::Order);
-                    //DeleteSH.SETFILTER(DeleteSH."No.",'%1','F-SO/2122/20783');
-                    DeleteSH.SETRANGE(DeleteSH."No.", "Sales Header"."No.");
-                    DeleteSH.SETRANGE(DeleteSH.Status, DeleteSH.Status::Open);
-                    DeleteSH.SetRange("Shipped Not Invoiced", false);
-                    DeleteSH.SETFILTER(DeleteSH."Shortcut Dimension 1 Code", '%1', 'CATTLE');
-                    IF DeleteSH.FINDFIRST THEN begin
-                        DeleteSL.RESET;
-                        DeleteSL.SETRANGE(DeleteSL."Document No.", DeleteSH."No.");
-                        IF DeleteSL.FINDSET THEN
-                            //DeleteSH.ConfirmDeletion();
-                            //DeleteSH.ConfirmDeletion()
-                            DeleteSL.DELETEALL(True);
-                        DeleteSH.DELETE(True);
-                    end;
-                end;
+                // Firstdate := CalcDate('-CM', WorkDate());
+                // if WorkDate() = CalcDate('-CM', WorkDate()) then begin
+                //     DeleteSH.RESET;
+                //     DeleteSH.SETRANGE("Document Type", DeleteSH."Document Type"::Order);
+                //     //DeleteSH.SETFILTER(DeleteSH."No.",'%1','F-SO/2122/20783');
+                //     DeleteSH.SETRANGE(DeleteSH."No.", "Sales Header"."No.");
+                //     DeleteSH.SETRANGE(DeleteSH.Status, DeleteSH.Status::Open);
+                //     DeleteSH.SetRange("Shipped Not Invoiced", false);
+                //     DeleteSH.SETFILTER(DeleteSH."Shortcut Dimension 1 Code", '%1', 'CATTLE');
+                //     IF DeleteSH.FINDFIRST THEN begin
+                //         DeleteSL.RESET;
+                //         DeleteSL.SETRANGE(DeleteSL."Document No.", DeleteSH."No.");
+                //         IF DeleteSL.FINDSET THEN
+                //             //DeleteSH.ConfirmDeletion();
+                //             //DeleteSH.ConfirmDeletion()
+                //             DeleteSL.DELETEALL(True);
+                //         DeleteSH.DELETE(True);
+                //     end;
+                // end;
 
 
 
